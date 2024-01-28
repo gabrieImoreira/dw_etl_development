@@ -8,6 +8,7 @@ fastapi = "*"
 uvicorn = "*"
 faker = "*"
 pandas = "*"
+requests = "*"
 
 [dev-packages]
 
