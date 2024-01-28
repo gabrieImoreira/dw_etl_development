@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = "*"
+faker = "*"
+pandas = "*"
 
 [dev-packages]
 
