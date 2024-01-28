@@ -1,22 +1,39 @@
+from backend.contracts.schema import GenericSchema
 import requests
 
 class APICollector():
 
-    def __init__(self, api_url):
+    def __init__(self, api_url, schema):
         self.api_url = api_url
-        self.aws = None
-        self.buffer = None
-        self.schema = None
+        self._aws = None
+        self._buffer = None
+        self._schema = schema
 
     def start(self):
         pass
 
-    def getData(self, num_registers: int):
-        response = requests.get(self.api_url + '/' + str(num_registers))
+    def getData(self, param: int):
+        if param is None:
+            response = requests.get(self.api_url)
+        elif param < 1:
+            return "Number de parâmetros tem que ser maior que 0"
+        
+        response = requests.get(self.api_url + '/' + str(param))
         return response.json()
 
-    def extractData(self):
-        pass
+    def extractData(self, response):
+        result: List[GenericSchema] = []
+        for item in response:
+            index = {}
+            for key, value in self._schema.items():
+                if type(item.get(key)) == value:
+                    index[key] = item[key]
+                else:
+                    index[key] = None
+            result.append(index)
+        return result
+
+
 
     def transformDf(self):
         pass

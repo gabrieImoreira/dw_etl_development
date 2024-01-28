@@ -26,7 +26,7 @@ async def get_room():
         "number_of_reviews": int(tuple["number_of_reviews"]),
         "last_review": tuple["last_review"],
         "license": tuple["license"],
-        "rating": tuple["rating"],
+        "rating": str(tuple["rating"]),
         "beds": int(tuple["beds"]),
         "baths": int(tuple["baths"])
         }
