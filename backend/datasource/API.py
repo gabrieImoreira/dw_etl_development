@@ -9,9 +9,10 @@ class APICollector():
         self._buffer = None
         self._schema = schema
 
-    def start(self):
-        pass
-
+    def start(self, param: int):
+        response = self.getData(param)
+        response = self.extractData(response)
+        return response
     def getData(self, param: int):
         if param is None:
             response = requests.get(self.api_url)
