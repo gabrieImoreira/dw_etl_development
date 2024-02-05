@@ -13,6 +13,7 @@ class APICollector():
         response = self.getData(param)
         response = self.extractData(response)
         return response
+
     def getData(self, param: int):
         if param is None:
             response = requests.get(self.api_url)
@@ -34,7 +35,16 @@ class APICollector():
             result.append(index)
         return result
 
+    def transformDf(self, response):
+        result = pd.DataFrame(response)
+        return result
 
+    def convertToParquet(self, response):
+        self._buffer = BytesIO()
+        try:
+            response.to_parquet(self._buffer)
+            return self._buffer
+        except:
+            print("Erro ao transformar o DF em parquet")
+            self._buffer = None
 
-    def transformDf(self):
-        pass
