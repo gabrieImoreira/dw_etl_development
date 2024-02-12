@@ -1,18 +1,31 @@
 from backend.contracts.schema import GenericSchema
+from datetime import datetime
+from io import BytesIO
+import pandas as pd
+import traceback
 import requests
 
 class APICollector():
 
-    def __init__(self, api_url, schema):
+    def __init__(self, api_url, schema: GenericSchema, aws):
         self.api_url = api_url
-        self._aws = None
+        self._aws = aws
         self._buffer = None
         self._schema = schema
 
     def start(self, param: int):
         response = self.getData(param)
         response = self.extractData(response)
-        return response
+        response = self.transformDf(response)
+        response = self.convertToParquet(response)
+
+        if self._buffer is not None:
+            filename = self.filename()
+            print(f"Upload do arquivo {filename} para o S3")
+            self._aws.upload_file(response, filename)
+            return True
+        
+        return False
 
     def getData(self, param: int):
         if param is None:
@@ -46,5 +59,8 @@ class APICollector():
             return self._buffer
         except:
             print("Erro ao transformar o DF em parquet")
-            self._buffer = None
+            self._buffer = None 
 
+    def filename(self):
+        date = datetime.now().isoformat()
+        return f"airbnb_{date.split('.')[0]}.parquet"

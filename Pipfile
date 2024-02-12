@@ -9,6 +9,9 @@ uvicorn = "*"
 faker = "*"
 pandas = "*"
 requests = "*"
+boto3 = "*"
+python-dotenv = "*"
+pyarrow = "*"
 
 [dev-packages]
 
