@@ -12,8 +12,12 @@ requests = "*"
 boto3 = "*"
 python-dotenv = "*"
 pyarrow = "*"
+streamlit = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.10"
+python_version = "3.11"
+
+[scripts]
+start = "uvicorn backend.fakeapi.start:app --reload --host 0.0.0.0 --port 8001"
